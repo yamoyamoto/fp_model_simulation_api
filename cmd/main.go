@@ -1,15 +1,17 @@
 package main
 
 import(
-	"fmt"
+	// "fmt"
 	"net/http"
+	"github.com/yamoto0628/fp_model_sumilation_api/controller"
+	"github.com/yamoto0628/fp_model_sumilation_api/model/repository"
 )
 
-func handler(web http.ResponseWriter, request *http.Request) {
-	fmt.Fprintf(web, "hello world!!")
-}
+var tr = repository.NewFPRepository()
+var tc = controller.NewFPController(tr)
+var ro = controller.NewRouter(tc)
 
 func main(){
-	http.HandleFunc("/", handler)
+	http.HandleFunc("/", ro.HandleFPRequest)
 	http.ListenAndServe(":8001", nil)
 }

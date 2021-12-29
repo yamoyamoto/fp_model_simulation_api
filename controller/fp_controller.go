@@ -1,42 +1,50 @@
 package controller
 
-import(
+import (
 	"encoding/json"
+	"fmt"
 	"net/http"
-	"path"
-	"strconv"
-	"../model/repository"
+
+	"github.com/yamoto0628/fp_model_sumilation_api/controller/dto"
+	"github.com/yamoto0628/fp_model_sumilation_api/model/entity"
+	"github.com/yamoto0628/fp_model_sumilation_api/model/repository"
 )
 
-
-// 外部に公開するインターフェイス
 type FPController interface{
 	FPSumilation(w http.ResponseWriter, r *http.Request)
 }
-
-
-// 非公開のTodoController構造体
-type FpController struct {
+type fPController struct{
 	tr repository.FPRepository
 }
-
-
-// TodoControllerのコンストラクタ。
-// 引数にTodoRepositoryを受け取り、TodoController構造体のポインタを返却する。
 func NewFPController(tr repository.FPRepository) FPController {
-	return &FpController{tr}
+	return &fPController{tr}
 }
 
-
 // シュミレーションフロー
-func (tc *FpController) FPSumilation(w http.ResponseWriter, r *http.Request) {
+func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) {
+	// INPUTを受け取る
+	body := make([]byte, r.ContentLength)
+	r.Body.Read(body)
+	var fpRequest dto.FPRequest
+	json.Unmarshal(body, &fpRequest)
 
+	pattern := entity.Pattern{Body: fpRequest.InputPattern}
+	trainData := fpRequest.TrainData
+
+	hebb := pattern.CaluculateHebb(&trainData)
 
 	// JSONに変換
-	// output, _ := json.MarshalIndent(todosResponse.Todos, "", "\t\t")
+	output, _ := json.MarshalIndent(hebb.J, "", "\t\t")
+	fmt.Print(output)
+
+	// ダミーフロー
+	var dammy []int64
+	dammy = append(dammy, 1)
+	dammy = append(dammy, 2)
+	dammy = append(dammy, 3)
+	dammyResponce, _ := json.Marshal(dammy)
 
 	// JSONを返却
 	w.Header().Set("Content-Type", "application/json")
-	// w.Write(output)
+	w.Write(dammyResponce)
 }
-

@@ -5,6 +5,11 @@ type FPRepository interface{
 }
 
 
-type todoRepository struct{
+type fpRepository struct{
 
+}
+
+
+func NewFPRepository() FPRepository {
+	return &fpRepository{}
 }
