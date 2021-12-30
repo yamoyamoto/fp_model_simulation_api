@@ -23,7 +23,7 @@ func (ro *router) HandleFPRequest(w http.ResponseWriter, r *http.Request) {
 	case "POST":
 		err := ro.tc.FPSumilation(w, r)
 		if err != nil {
-			fmt.Printf("error: %s", err)
+			fmt.Printf("FPSumilation error: %s", err)
 		}
 	default:
 		w.WriteHeader(405)

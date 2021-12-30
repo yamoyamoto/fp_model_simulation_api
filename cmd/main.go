@@ -11,6 +11,6 @@ var tc = controller.NewFPController(tr)
 var ro = controller.NewRouter(tc)
 
 func main() {
-	http.HandleFunc("/", ro.HandleFPRequest)
-	_ = http.ListenAndServe(":8001", nil)
+	http.HandleFunc("/api", ro.HandleFPRequest)
+	_ = http.ListenAndServe(":8000", nil)
 }

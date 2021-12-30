@@ -23,30 +23,27 @@ func NewFPController(tr repository.FPRepository) FPController {
 
 // シュミレーションフロー
 func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) error {
-	// INPUTを受け取る
-	body := make([]byte, r.ContentLength)
-	_, err := r.Body.Read(body)
-	if err != nil {
-		return err
-	}
 	var fpRequest dto.FPRequest
-	err = json.Unmarshal(body, &fpRequest)
+	err := json.NewDecoder(r.Body).Decode(&fpRequest)
 	if err != nil {
+		fmt.Print("json parse error\n")
 		return err
 	}
 
-	pattern := entity.Pattern{Body: fpRequest.InputPattern}
+	var pattern dto.FPResponse
+	pattern.OutputPattern = fpRequest.InputPattern
 	trainData := fpRequest.TrainData
 
-	hebb := pattern.CaluculateHebb(&trainData)
-	pattern.ExecDynamics(&hebb, 100)
+	hebb := entity.CaluculateHebb(fpRequest.InputPattern, &trainData)
+	var outputStruct dto.FPResponse
+	outputStruct.OutputPattern = hebb.ExecDynamics(fpRequest.InputPattern, 100)
 
-	// JSONに変換
-	output, _ := json.MarshalIndent(pattern, "", "\t\t")
+	output, _ := json.Marshal(outputStruct)
 	fmt.Print(output)
 
-	// JSONを返却
 	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	_, err = w.Write(output)
 	if err != nil {
 		return err
