@@ -10,41 +10,46 @@ import (
 	"github.com/yamoto0628/fp_model_sumilation_api/model/repository"
 )
 
-type FPController interface{
-	FPSumilation(w http.ResponseWriter, r *http.Request)
+type FPController interface {
+	FPSumilation(w http.ResponseWriter, r *http.Request) error
 }
-type fPController struct{
+type fPController struct {
 	tr repository.FPRepository
 }
+
 func NewFPController(tr repository.FPRepository) FPController {
 	return &fPController{tr}
 }
 
 // シュミレーションフロー
-func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) {
+func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) error{
 	// INPUTを受け取る
 	body := make([]byte, r.ContentLength)
-	r.Body.Read(body)
+	_, err := r.Body.Read(body)
+	if err != nil {
+		return err
+	}
 	var fpRequest dto.FPRequest
-	json.Unmarshal(body, &fpRequest)
+	err = json.Unmarshal(body, &fpRequest)
+	if err != nil{
+		return err
+	}
 
 	pattern := entity.Pattern{Body: fpRequest.InputPattern}
 	trainData := fpRequest.TrainData
 
 	hebb := pattern.CaluculateHebb(&trainData)
+	pattern.ExecDynamics(&hebb, 100)
 
 	// JSONに変換
-	output, _ := json.MarshalIndent(hebb.J, "", "\t\t")
+	output, _ := json.MarshalIndent(pattern, "", "\t\t")
 	fmt.Print(output)
-
-	// ダミーフロー
-	var dammy []int64
-	dammy = append(dammy, 1)
-	dammy = append(dammy, 2)
-	dammy = append(dammy, 3)
-	dammyResponce, _ := json.Marshal(dammy)
 
 	// JSONを返却
 	w.Header().Set("Content-Type", "application/json")
-	w.Write(dammyResponce)
+	_, err = w.Write(output)
+	if err != nil {
+		return err
+	}
+	return nil
 }
