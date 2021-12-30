@@ -4,7 +4,7 @@
   "go.lintTool": "golangci-lint",
   "go.useLanguageServer": true,
   "[go]": {
-      "editor.formatOnSave": false,
+      "editor.formatOnSave": true,
       "editor.codeActionsOnSave": {
           "source.organizeImports": false
       },

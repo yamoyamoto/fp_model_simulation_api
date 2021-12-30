@@ -10,7 +10,7 @@ type Pattern struct {
 	Body []int64
 }
 
-func (pattern *Pattern) CaluculateHebb(trainData *[][]int64) (Hebb) {
+func (pattern *Pattern) CaluculateHebb(trainData *[][]int64) Hebb {
 	var hebb Hebb
 	for i := range pattern.Body {
 		var hebb_i []int64

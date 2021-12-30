@@ -1,10 +1,11 @@
 package controller
 
-import(
+import (
+	"fmt"
 	"net/http"
 )
 
-type Router interface{
+type Router interface {
 	HandleFPRequest(w http.ResponseWriter, r *http.Request)
 }
 
@@ -20,7 +21,10 @@ func NewRouter(tc FPController) Router {
 func (ro *router) HandleFPRequest(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
-		ro.tc.FPSumilation(w, r)
+		err := ro.tc.FPSumilation(w, r)
+		if err != nil {
+			fmt.Printf("error: %s", err)
+		}
 	default:
 		w.WriteHeader(405)
 	}

@@ -22,7 +22,7 @@ func NewFPController(tr repository.FPRepository) FPController {
 }
 
 // シュミレーションフロー
-func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) error{
+func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) error {
 	// INPUTを受け取る
 	body := make([]byte, r.ContentLength)
 	_, err := r.Body.Read(body)
@@ -31,7 +31,7 @@ func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) err
 	}
 	var fpRequest dto.FPRequest
 	err = json.Unmarshal(body, &fpRequest)
-	if err != nil{
+	if err != nil {
 		return err
 	}
 
