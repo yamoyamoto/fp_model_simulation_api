@@ -11,5 +11,5 @@ type FPRequest struct {
 }
 
 type FPResponse struct {
-	OutputPattern []entity.PatternFromDynamics `json:"output_pattern"`
+	OutputPattern []entity.PatternFromDynamics `json:"body"`
 }
