@@ -17,5 +17,5 @@ func main() {
 		port = "8000"
 	}
 	http.HandleFunc("/api", ro.HandleFPRequest)
-	_ = http.ListenAndServe(port, nil)
+	_ = http.ListenAndServe(":"+port, nil)
 }
