@@ -1,10 +1,13 @@
 package entity
 
-// 結合定数の構造体
 type Hebb [][]int64
 
-// パターンの構造体
 type Pattern []int64
+
+type PatternFromDynamics struct {
+	Count   int     `json:"count"`
+	Pattern Pattern `json:"pattern"`
+}
 
 func CaluculateHebb(pattern []int64, trainData *[][]int64) Hebb {
 	var hebb Hebb
@@ -22,8 +25,17 @@ func CaluculateHebb(pattern []int64, trainData *[][]int64) Hebb {
 	return hebb
 }
 
-func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []int64 {
+func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []PatternFromDynamics {
+	var patternFromDynamicsAll []PatternFromDynamics
+	fhaseInterval := dynamicsCount / 5
 	for i := 0; i < dynamicsCount; i++ {
+		if i%fhaseInterval == 0 {
+			PatternFromDynamics := PatternFromDynamics{
+				Count:   i,
+				Pattern: pattern,
+			}
+			patternFromDynamicsAll = append(patternFromDynamicsAll, PatternFromDynamics)
+		}
 		var next_S_ij int64 = 0
 		for j := 0; j < len(pattern); j++ {
 			for k := 0; k < len(pattern); k++ {
@@ -36,5 +48,5 @@ func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []int64 {
 			}
 		}
 	}
-	return pattern
+	return patternFromDynamicsAll
 }

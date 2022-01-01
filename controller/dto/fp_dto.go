@@ -1,5 +1,9 @@
 package dto
 
+import (
+	"github.com/yamoto0628/fp_model_sumilation_api/model/entity"
+)
+
 type FPRequest struct {
 	TrainData     [][]int64 `json:"train_data"`
 	InputPattern  []int64   `json:"input_pattern"`
@@ -7,5 +11,5 @@ type FPRequest struct {
 }
 
 type FPResponse struct {
-	OutputPattern []int64 `json:"output_pattern"`
+	OutputPattern []entity.PatternFromDynamics `json:"output_pattern"`
 }

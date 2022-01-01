@@ -30,8 +30,6 @@ func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) err
 		return err
 	}
 
-	var pattern dto.FPResponse
-	pattern.OutputPattern = fpRequest.InputPattern
 	trainData := fpRequest.TrainData
 
 	hebb := entity.CaluculateHebb(fpRequest.InputPattern, &trainData)
