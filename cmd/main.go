@@ -1,10 +1,12 @@
 package main
 
 import (
-	"github.com/yamoto0628/fp_model_sumilation_api/controller"
-	"github.com/yamoto0628/fp_model_sumilation_api/model/repository"
+	"log"
 	"net/http"
 	"os"
+
+	"github.com/yamoto0628/fp_model_sumilation_api/controller"
+	"github.com/yamoto0628/fp_model_sumilation_api/model/repository"
 )
 
 var tr = repository.NewFPRepository()
@@ -16,6 +18,7 @@ func main() {
 	if port == "" {
 		port = "8000"
 	}
+	log.Printf("server run on port:%v", port)
 	http.HandleFunc("/api", ro.HandleFPRequest)
 	_ = http.ListenAndServe(":"+port, nil)
 }

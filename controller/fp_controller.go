@@ -37,7 +37,6 @@ func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) err
 	outputStruct.OutputPattern = hebb.ExecDynamics(fpRequest.InputPattern, 100)
 
 	output, _ := json.Marshal(outputStruct)
-	fmt.Print(output)
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
