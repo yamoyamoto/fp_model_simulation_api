@@ -9,7 +9,7 @@ type PatternFromDynamics struct {
 	Pattern Pattern `json:"pattern"`
 }
 
-func CaluculateHebb(pattern []int64, trainData *[][]int64) Hebb {
+func CalculateHebb(pattern []int64, trainData *[][]int64) Hebb {
 	var hebb Hebb
 	N := len(*trainData)
 	for i := range pattern {
@@ -29,8 +29,7 @@ func CaluculateHebb(pattern []int64, trainData *[][]int64) Hebb {
 func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []PatternFromDynamics {
 	var patternFromDynamicsAll []PatternFromDynamics
 	patternLen := len(pattern)
-	fhaseInterval := dynamicsCount / 10
-	print(fhaseInterval)
+	phaseInterval := dynamicsCount / 10
 	for count := 0; count < dynamicsCount; count++ {
 		for i := 0; i < len(pattern); i++ {
 			var next_S_ij int64 = 0
@@ -46,7 +45,7 @@ func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []PatternFromD
 				pattern[i] = -1
 			}
 		}
-		if fhaseInterval == 0 || count%fhaseInterval == 0 {
+		if phaseInterval == 0 || count%phaseInterval == 0 {
 			patternCopy := make([]int64, patternLen)
 			copy(patternCopy, pattern)
 			patternFromDynamics := PatternFromDynamics{

@@ -11,7 +11,7 @@ import (
 )
 
 type FPController interface {
-	FPSumilation(w http.ResponseWriter, r *http.Request) error
+	FPSimulation(w http.ResponseWriter, r *http.Request) error
 }
 type fPController struct {
 	tr repository.FPRepository
@@ -22,7 +22,7 @@ func NewFPController(tr repository.FPRepository) FPController {
 }
 
 // シュミレーションフロー
-func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) error {
+func (tc *fPController) FPSimulation(w http.ResponseWriter, r *http.Request) error {
 	var fpRequest dto.FPRequest
 	err := json.NewDecoder(r.Body).Decode(&fpRequest)
 	if err != nil {
@@ -32,7 +32,7 @@ func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) err
 
 	trainData := fpRequest.TrainData
 
-	hebb := entity.CaluculateHebb(fpRequest.InputPattern, &trainData)
+	hebb := entity.CalculateHebb(fpRequest.InputPattern, &trainData)
 	var outputStruct dto.FPResponse
 	outputStruct.OutputPattern = hebb.ExecDynamics(fpRequest.InputPattern, int(fpRequest.DynamicsCount))
 	outputStruct.Hebb = hebb

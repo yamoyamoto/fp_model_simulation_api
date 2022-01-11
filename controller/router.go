@@ -21,9 +21,9 @@ func NewRouter(tc FPController) Router {
 func (ro *router) HandleFPRequest(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
-		err := ro.tc.FPSumilation(w, r)
+		err := ro.tc.FPSimulation(w, r)
 		if err != nil {
-			fmt.Printf("FPSumilation error: %s", err)
+			fmt.Printf("FPSimulation error: %s", err)
 		}
 	default:
 		w.WriteHeader(405)
