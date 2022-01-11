@@ -34,7 +34,8 @@ func (tc *fPController) FPSumilation(w http.ResponseWriter, r *http.Request) err
 
 	hebb := entity.CaluculateHebb(fpRequest.InputPattern, &trainData)
 	var outputStruct dto.FPResponse
-	outputStruct.OutputPattern = hebb.ExecDynamics(fpRequest.InputPattern, 100)
+	outputStruct.OutputPattern = hebb.ExecDynamics(fpRequest.InputPattern, int(fpRequest.DynamicsCount))
+	outputStruct.Hebb = hebb
 
 	output, _ := json.Marshal(outputStruct)
 
