@@ -1,5 +1,7 @@
 package entity
 
+import "fmt"
+
 type Hebb [][]int64
 
 type Pattern []int64
@@ -31,29 +33,37 @@ func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []PatternFromD
 	patternLen := len(pattern)
 	phaseInterval := dynamicsCount / 10
 	for count := 0; count < dynamicsCount; count++ {
+		var next_pattern []int64
+
 		for i := 0; i < len(pattern); i++ {
 			var next_S_ij int64 = 0
+
 			for j := 0; j < len(pattern); j++ {
 				if i == j {
 					continue
 				}
-				next_S_ij += hebb[i][j] * pattern[i]
+				next_S_ij = next_S_ij + hebb[i][j]*pattern[j]
 			}
+
 			if next_S_ij >= 0 {
-				pattern[i] = 1
+				next_pattern = append(next_pattern, 1)
 			} else {
-				pattern[i] = -1
+				next_pattern = append(next_pattern, -1)
 			}
+			fmt.Printf("i=%vにおいて、next_S_ijは%vなので、次のS_iは、%vです\n", i, next_S_ij, next_pattern[i])
+
 		}
+
 		if phaseInterval == 0 || count%phaseInterval == 0 {
 			patternCopy := make([]int64, patternLen)
-			copy(patternCopy, pattern)
+			copy(patternCopy, next_pattern)
 			patternFromDynamics := PatternFromDynamics{
 				Count:   count,
 				Pattern: patternCopy,
 			}
 			patternFromDynamicsAll = append(patternFromDynamicsAll, patternFromDynamics)
 		}
+		print("\n")
 	}
 	return patternFromDynamicsAll
 }
