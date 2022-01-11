@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/yamoto0628/fp_model_sumilation_api/controller/dto"
-	"github.com/yamoto0628/fp_model_sumilation_api/model/entity"
-	"github.com/yamoto0628/fp_model_sumilation_api/model/repository"
+	"github.com/yamoto0628/fp_model_simulation_api/controller/dto"
+	"github.com/yamoto0628/fp_model_simulation_api/model/entity"
+	"github.com/yamoto0628/fp_model_simulation_api/model/repository"
 )
 
 type FPController interface {

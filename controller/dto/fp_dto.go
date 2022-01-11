@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"github.com/yamoto0628/fp_model_sumilation_api/model/entity"
+	"github.com/yamoto0628/fp_model_simulation_api/model/entity"
 )
 
 type FPRequest struct {

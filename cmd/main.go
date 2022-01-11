@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/yamoto0628/fp_model_sumilation_api/controller"
-	"github.com/yamoto0628/fp_model_sumilation_api/model/repository"
+	"github.com/yamoto0628/fp_model_simulation_api/controller"
+	"github.com/yamoto0628/fp_model_simulation_api/model/repository"
 )
 
 var tr = repository.NewFPRepository()
