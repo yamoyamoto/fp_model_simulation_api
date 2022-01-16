@@ -1,6 +1,9 @@
 package entity
 
-import "fmt"
+import (
+	"math"
+	"math/rand"
+)
 
 type Hebb [][]int64
 
@@ -28,7 +31,7 @@ func CalculateHebb(pattern []int64, trainData *[][]int64) Hebb {
 	return hebb
 }
 
-func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []PatternFromDynamics {
+func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []PatternFromDynamics {
 	var patternFromDynamicsAll []PatternFromDynamics
 	patternLen := len(pattern)
 	phaseInterval := dynamicsCount / 10
@@ -45,13 +48,8 @@ func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []PatternFromD
 				next_S_ij = next_S_ij + hebb[i][j]*pattern[j]
 			}
 
-			if next_S_ij >= 0 {
-				next_pattern = append(next_pattern, 1)
-			} else {
-				next_pattern = append(next_pattern, -1)
-			}
-			fmt.Printf("i=%vにおいて、next_S_ijは%vなので、次のS_iは、%vです\n", i, next_S_ij, next_pattern[i])
-
+			next_pattern = append(next_pattern, decideNextS_ij(next_S_ij, beta))
+			// fmt.Printf("i=%vにおいて、next_S_ijは%vなので、次のS_iは、%vです\n", i, next_S_ij, next_pattern[i])
 		}
 
 		if phaseInterval == 0 || count%phaseInterval == 0 {
@@ -66,4 +64,17 @@ func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int) []PatternFromD
 		print("\n")
 	}
 	return patternFromDynamicsAll
+}
+
+func decideNextS_ij(h_ij int64, beta float64) int64 {
+	r := rand.Float64()
+	if r <= W(h_ij, beta) {
+		return 1
+	} else {
+		return -1
+	}
+}
+
+func W(h_ij int64, beta float64) float64 {
+	return 1 / (1 + math.Exp(-2*beta*float64(h_ij)))
 }

@@ -8,6 +8,7 @@ type FPRequest struct {
 	TrainData     [][]int64 `json:"train_data"`
 	InputPattern  []int64   `json:"input_pattern"`
 	DynamicsCount int64     `json:"dynamics_count"`
+	Beta          float64   `json:"beta"`
 }
 
 type FPResponse struct {
