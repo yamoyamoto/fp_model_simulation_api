@@ -39,16 +39,16 @@ func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) 
 		var next_pattern []int64
 
 		for i := 0; i < len(pattern); i++ {
-			var next_S_ij int64 = 0
+			var h_ij int64 = 0
 
 			for j := 0; j < len(pattern); j++ {
 				if i == j {
 					continue
 				}
-				next_S_ij = next_S_ij + hebb[i][j]*pattern[j]
+				h_ij = h_ij + hebb[i][j]*pattern[j]
 			}
 
-			next_pattern = append(next_pattern, decideNextS_ij(next_S_ij, beta))
+			next_pattern = append(next_pattern, decideNextS_ij(h_ij, beta))
 			// fmt.Printf("i=%vにおいて、next_S_ijは%vなので、次のS_iは、%vです\n", i, next_S_ij, next_pattern[i])
 		}
 
