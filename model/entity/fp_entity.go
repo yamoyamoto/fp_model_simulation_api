@@ -31,7 +31,7 @@ func MakeJ(pattern []int64, trainData *[][]int64) J {
 	return J
 }
 
-func (hebb *J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []PatternFromDynamics {
+func (J *J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []PatternFromDynamics {
 	var patternFromDynamicsAll []PatternFromDynamics
 	patternLen := len(pattern)
 	phaseInterval := dynamicsCount / 10
@@ -45,7 +45,7 @@ func (hebb *J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []
 				if i == j {
 					continue
 				}
-				h_ij = h_ij + (*hebb)[i][j]*pattern[j]
+				h_ij = h_ij + (*J)[i][j]*pattern[j]
 			}
 
 			next_pattern = append(next_pattern, decideNextS_ij(h_ij, beta))
