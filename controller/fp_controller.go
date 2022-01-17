@@ -32,7 +32,7 @@ func (tc *fPController) FPSimulation(w http.ResponseWriter, r *http.Request) err
 
 	trainData := fpRequest.TrainData
 
-	hebb := entity.CalculateHebb(fpRequest.InputPattern, &trainData)
+	hebb := entity.MakeJ(fpRequest.InputPattern, &trainData)
 	var outputStruct dto.FPResponse
 	outputStruct.OutputPattern = hebb.ExecDynamics(fpRequest.InputPattern, int(fpRequest.DynamicsCount), fpRequest.Beta)
 	outputStruct.Hebb = hebb

@@ -14,24 +14,24 @@ type PatternFromDynamics struct {
 	Pattern Pattern `json:"pattern"`
 }
 
-func CalculateHebb(pattern []int64, trainData *[][]int64) J {
+func MakeJ(pattern []int64, trainData *[][]int64) J {
 	var J J
 	N := len(*trainData)
 	for i := range pattern {
-		var hebb_i []int64
+		var J_i []int64
 		for j := range pattern {
-			var hebb_i_j int64 = 0
+			var J_ij int64 = 0
 			for _, trainDataOne := range *trainData {
-				hebb_i_j += trainDataOne[i] * trainDataOne[j]
+				J_ij += trainDataOne[i] * trainDataOne[j]
 			}
-			hebb_i = append(hebb_i, hebb_i_j/int64(N))
+			J_i = append(J_i, J_ij/int64(N))
 		}
-		J = append(J, hebb_i)
+		J = append(J, J_i)
 	}
 	return J
 }
 
-func (hebb J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []PatternFromDynamics {
+func (hebb *J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []PatternFromDynamics {
 	var patternFromDynamicsAll []PatternFromDynamics
 	patternLen := len(pattern)
 	phaseInterval := dynamicsCount / 10
@@ -45,11 +45,10 @@ func (hebb J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []P
 				if i == j {
 					continue
 				}
-				h_ij = h_ij + hebb[i][j]*pattern[j]
+				h_ij = h_ij + (*hebb)[i][j]*pattern[j]
 			}
 
 			next_pattern = append(next_pattern, decideNextS_ij(h_ij, beta))
-			// fmt.Printf("i=%vにおいて、next_S_ijは%vなので、次のS_iは、%vです\n", i, next_S_ij, next_pattern[i])
 		}
 
 		if phaseInterval == 0 || count%phaseInterval == 0 {
