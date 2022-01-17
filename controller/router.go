@@ -19,6 +19,10 @@ func NewRouter(tc FPController) Router {
 }
 
 func (ro *router) HandleFPRequest(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	switch r.Method {
 	case "POST":
 		err := ro.tc.FPSimulation(w, r)

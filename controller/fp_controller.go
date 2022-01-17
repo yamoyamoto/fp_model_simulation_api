@@ -39,9 +39,6 @@ func (tc *fPController) FPSimulation(w http.ResponseWriter, r *http.Request) err
 
 	output, _ := json.Marshal(outputStruct)
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	_, err = w.Write(output)
 	if err != nil {
 		return err
