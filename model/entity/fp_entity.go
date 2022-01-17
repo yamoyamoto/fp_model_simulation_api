@@ -5,7 +5,7 @@ import (
 	"math/rand"
 )
 
-type Hebb [][]int64
+type J [][]int64
 
 type Pattern []int64
 
@@ -14,8 +14,8 @@ type PatternFromDynamics struct {
 	Pattern Pattern `json:"pattern"`
 }
 
-func CalculateHebb(pattern []int64, trainData *[][]int64) Hebb {
-	var hebb Hebb
+func CalculateHebb(pattern []int64, trainData *[][]int64) J {
+	var J J
 	N := len(*trainData)
 	for i := range pattern {
 		var hebb_i []int64
@@ -26,12 +26,12 @@ func CalculateHebb(pattern []int64, trainData *[][]int64) Hebb {
 			}
 			hebb_i = append(hebb_i, hebb_i_j/int64(N))
 		}
-		hebb = append(hebb, hebb_i)
+		J = append(J, hebb_i)
 	}
-	return hebb
+	return J
 }
 
-func (hebb Hebb) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []PatternFromDynamics {
+func (hebb J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []PatternFromDynamics {
 	var patternFromDynamicsAll []PatternFromDynamics
 	patternLen := len(pattern)
 	phaseInterval := dynamicsCount / 10
