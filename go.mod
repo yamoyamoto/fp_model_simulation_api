@@ -1,5 +1,6 @@
 module github.com/yamoto0628/fp_model_simulation_api
 
+// +heroku goVersion go1.17
 go 1.17
 
 replace github.com/yamoto0628/fp_model_simulation_api/model/repository => ./model/repository
