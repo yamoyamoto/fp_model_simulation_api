@@ -29,6 +29,8 @@ func (ro *router) HandleFPRequest(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Printf("FPSimulation error: %s", err)
 		}
+	case "OPTIONS":
+		// for CORS
 	default:
 		w.WriteHeader(405)
 	}
