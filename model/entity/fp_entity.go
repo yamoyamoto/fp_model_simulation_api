@@ -35,17 +35,20 @@ func (J *J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []Pat
 	var patternFromDynamicsAll []PatternFromDynamics
 	patternLen := len(pattern)
 	phaseInterval := dynamicsCount / 10
+
+	nowPattern := make([]int64, patternLen)
+	copy(nowPattern, pattern)
 	for count := 0; count < dynamicsCount; count++ {
 		var next_pattern []int64
 
-		for i := 0; i < len(pattern); i++ {
+		for i := 0; i < len(nowPattern); i++ {
 			var h_ij int64 = 0
 
-			for j := 0; j < len(pattern); j++ {
+			for j := 0; j < len(nowPattern); j++ {
 				if i == j {
 					continue
 				}
-				h_ij = h_ij + (*J)[i][j]*pattern[j]
+				h_ij = h_ij + (*J)[i][j]*nowPattern[j]
 			}
 
 			next_pattern = append(next_pattern, decideNextS_ij(h_ij, beta))
@@ -61,6 +64,8 @@ func (J *J) ExecDynamics(pattern []int64, dynamicsCount int, beta float64) []Pat
 			patternFromDynamicsAll = append(patternFromDynamicsAll, patternFromDynamics)
 		}
 		print("\n")
+
+		nowPattern = next_pattern
 	}
 	return patternFromDynamicsAll
 }
